@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Add Book</title>
+</head>
+<body>
+    <h1>Test Add Book Functionality</h1>
+    <button onclick="testAddBook()">Test Add Book</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAddBook() {
+            const book = {
+                title: "Test Book",
+                author: "Test Author", 
+                genre: "Test Genre",
+                description: "Test Description"
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/api/books', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(book)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    document.getElementById('result').innerHTML = 
+                        '<p style="color: green;">Book added successfully: ' + JSON.stringify(result) + '</p>';
+                } else {
+                    document.getElementById('result').innerHTML = 
+                        '<p style="color: red;">Error: ' + response.status + ' ' + response.statusText + '</p>';
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = 
+                    '<p style="color: red;">Network error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>
